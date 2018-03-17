@@ -6,14 +6,8 @@ import React from 'react';
 class Chart extends React.Component {
   render() {
     const { results } = this.props;
-    const data1 = results.map((res, idx) => ({
-      x: idx,
-      y: res,
-    }));
-    const data2 = results.map((res, idx) => ({
-      x: idx,
-      y: res * 2,
-    }));
+    const data = results.map(res => res.toJS());
+    console.log('data', data);
     return (
       <LineChart
         axes
@@ -21,7 +15,7 @@ class Chart extends React.Component {
         axisLabels={{ x: 'Days', y: 'Number' }}
         width={600}
         height={400}
-        data={[data1, data2]}
+        data={data}
       />
     );
   }
