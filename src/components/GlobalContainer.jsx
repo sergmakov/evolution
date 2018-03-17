@@ -1,19 +1,23 @@
+import { FormControl, FormGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { observer } from 'mobx-react';
+import styled from 'styled-components';
 
 @observer
 class GlobalContainer extends React.Component {
   render() {
+    const TextBlock = styled.div`
+      font-size: 15px;
+    `;
     return (
-      <div>
-        <div>{this.props.store.message}</div>
-        <input
+      <FormGroup>
+        <FormControl
           type="text"
-          value={this.newTodoTitle}
           onChange={this.handleInputChange}
         />
-      </div>
+        <TextBlock>{this.props.store.message}</TextBlock>
+      </FormGroup>
     );
   }
 
