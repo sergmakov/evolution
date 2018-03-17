@@ -1,12 +1,32 @@
+import Animal from './Animal';
 import Environment from './Environment';
 import Species from './Species';
 
-class Timer {
-  constructor() {
+class Universe {
+  constructor(configs) {
+    const {
+      species,
+      animalClass,
+      environmentClass,
+    } = configs;
+    const EnvironmentClass = environmentClass || Environment;
+    const AnimalClass = animalClass || Animal;
+
     this.day = 0;
-    this.environment = new Environment();
-    this.species = species.map(spiciesConfig => new Species(spiciesConfig, configs));
+    this.environment = new EnvironmentClass();
+    this.species = species.map(spiciesConfig => new Species(spiciesConfig, AnimalClass));
     this.results = this.species.map(() => []);
+  }
+
+  tick() {
+    this.collectDayResult();
+    this.waitDay();
+  }
+
+  makeTicks(number) {
+    for (let i = 0; i < number; i++) {
+      this.tick();
+    }
   }
 
   waitDay() {
@@ -15,7 +35,7 @@ class Timer {
     this.day++;
   }
 
-  storeDayResult() {
+  collectDayResult() {
     const { results } = this;
     this.species.forEach((spicies, idx) => {
       results[idx].push({
@@ -38,4 +58,4 @@ class Timer {
   }
 }
 
-export default Timer;
+export default Universe;

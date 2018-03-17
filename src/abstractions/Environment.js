@@ -1,6 +1,9 @@
+import { random } from 'lodash';
+
 class Environment {
   getFood(animal) {
-    return true;
+    // console.log('random()', random());
+    return random(1, 10) > 9;
   }
 }
 

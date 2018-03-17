@@ -1,12 +1,13 @@
 import { LineChart } from 'react-easy-chart';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { toJS } from 'mobx';
 
 
 class Chart extends React.Component {
   render() {
     const { results } = this.props;
-    const data = results.map(res => res.toJS());
+    const data = results.map(res => res.toJS().map(item => toJS(item)));
     console.log('data', data);
     return (
       <LineChart

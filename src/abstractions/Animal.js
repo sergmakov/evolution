@@ -15,7 +15,7 @@ class Animal {
     });
   }
 
-  multiply(env) {
+  tryToMultiply(env) {
     this.species.addAnimal();
   }
 
@@ -31,7 +31,7 @@ class Animal {
 
   endDay() {
     this.stats.live = this.canLive();
-    this.stats.fed = true;
+    this.stats.fed = false;
   }
 }
 

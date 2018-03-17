@@ -1,17 +1,15 @@
-import Animal from './Animal';
-
-
 class Species {
-  constructor({ act, initNumber }) {
+  constructor({ act, initNumber }, AnimalClass) {
     this.act = act;
     this.animals = [];
+    this.AnimalClass = AnimalClass;
     for (let i = 0; i < initNumber; i++) {
-      this.addAnimal();
+      this.addAnimal(AnimalClass);
     }
   }
 
   addAnimal() {
-    this.animals.push(new Animal({
+    this.animals.push(new this.AnimalClass({
       species: this,
     }));
   }
