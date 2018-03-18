@@ -8,7 +8,7 @@ class Animal {
   }
 
   act = (env) => {
-    this.species.act({
+    return this.species.act({
       env,
       multiply: () => this.tryToMultiply(env),
       eat: () => this.tryToEat(env),
@@ -16,20 +16,28 @@ class Animal {
   }
 
   tryToMultiply(env) {
-    this.species.addAnimal();
+    return env.tryToMultiply(this)
+      .then(success => {
+        if (success) {
+          this.species.addAnimal();
+        }
+      });
   }
 
   tryToEat(env) {
-    if (env.getFood(this)) {
-      this.stats.fed = true;
-    }
+    return env.tryToEat(this)
+      .then(success => {
+        if (success) {
+          this.stats.fed = true;
+        }
+      });
   }
 
   canLive() {
     return this.stats.fed;
   }
 
-  endDay() {
+  updateStats() {
     this.stats.live = this.canLive();
     this.stats.fed = false;
   }

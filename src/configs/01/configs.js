@@ -4,15 +4,11 @@ import { random } from 'lodash';
 import species from './species';
 
 class AnimalClass extends Animal {}
-class EnvironmentClass extends Environment {
-  getFood(animal) {
-    // console.log('random()', random());
-    return random(1, 10) > 1;
-  }
-}
+class EnvironmentClass extends Environment {}
 
 export default {
+  daysNumber: 10,
   species,
   // animalClass: AnimalClass,
-  environmentClass: EnvironmentClass,
+  // environmentClass: EnvironmentClass,
 };

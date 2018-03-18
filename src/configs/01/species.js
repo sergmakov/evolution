@@ -1,15 +1,15 @@
 export default [
-  {
-    act: ({ eat, multiply }) => {
-      eat();
-      multiply();
-    },
-    initNumber: 3,
-  },
+  // {
+  //   act: ({ eat, multiply }) => {
+  //     return eat()
+  //       .then(() => multiply());
+  //   },
+  //   initNumber: 10,
+  // },
   {
     act: ({ eat }) => {
-      eat();
+      return eat();
     },
-    initNumber: 3,
+    initNumber: 10000,
   },
 ];

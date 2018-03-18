@@ -20,29 +20,52 @@ class Universe {
 
   tick() {
     this.collectDayResult();
-    this.waitDay();
+    return this.waitDay();
   }
 
-  makeTicks(number) {
+  makeTicks(number, callback) {
+    let promise = Promise.resolve();
     for (let i = 0; i < number; i++) {
-      this.tick();
+      promise = promise
+        .then(() => {
+          this.tick();
+          callback(this.getResults());
+        })
+        .then(() => this.makeTimeout());
     }
+    return promise;
   }
 
   waitDay() {
-    this.forEachAnimal(animal => animal.act(this.environment));
-    this.forEachAnimal(animal => animal.endDay());
-    this.day++;
+    const allAnimals = this.getAllLiveAnimals();
+    const actPromises = allAnimals.map(animal => animal.act(this.environment));
+    return Promise.all(actPromises).then(() => {
+      allAnimals.forEach(animal => animal.updateStats());
+      this.day++;
+    });
   }
 
   collectDayResult() {
     const { results } = this;
     this.species.forEach((spicies, idx) => {
+      console.log('results', {
+        x: this.day,
+        y: spicies.population,
+      });
       results[idx].push({
         x: this.day,
         y: spicies.population,
       });
     });
+  }
+
+  getAllLiveAnimals() {
+    return this.species.reduce((sum, species) => {
+      return [
+        ...sum,
+        ...species.animals.filter(animal => animal.stats.live),
+      ];
+    }, []);
   }
 
   forEachAnimal(func) {
@@ -55,6 +78,10 @@ class Universe {
 
   getResults() {
     return this.results;
+  }
+
+  makeTimeout() {
+    return new Promise(resolve => setTimeout(() => resolve(), 0));
   }
 }
 

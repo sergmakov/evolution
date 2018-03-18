@@ -11,8 +11,9 @@ class GlobalContainer extends React.Component {
   evolve = () => {
     const { store, configs } = this.props;
     const universe = new Universe(configs);
-    universe.makeTicks(10);
-    store.results = universe.getResults();
+    universe.makeTicks(configs.daysNumber, results => {
+      store.results = results;
+    });
   }
   render() {
     const { results } = this.props.store;
