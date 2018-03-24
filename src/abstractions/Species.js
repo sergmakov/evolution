@@ -1,6 +1,7 @@
 class Species {
-  constructor({ act, initNumber }, AnimalClass) {
+  constructor({ act, initNumber, name }, AnimalClass) {
     this.act = act;
+    this.name = name;
     this.animals = [];
     this.AnimalClass = AnimalClass;
     for (let i = 0; i < initNumber; i++) {

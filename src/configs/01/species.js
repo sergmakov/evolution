@@ -1,15 +1,24 @@
-export default [
-  // {
-  //   act: ({ eat, multiply }) => {
-  //     return eat()
-  //       .then(() => multiply());
-  //   },
-  //   initNumber: 10,
-  // },
+const species = [
   {
-    act: ({ eat }) => {
-      return eat();
+    name: 'Multiply earlier',
+    act: ({ stats }) => {
+      if (stats.fed > 4) {
+        return ['multiply'];
+      }
+      return ['eat'];
     },
-    initNumber: 10000,
+    initNumber: 100,
+  },
+  {
+    name: 'Multiply later',
+    act: ({ stats }) => {
+      if (stats.fed > 6) {
+        return ['multiply'];
+      }
+      return ['eat'];
+    },
+    initNumber: 100,
   },
 ];
+
+export default species;

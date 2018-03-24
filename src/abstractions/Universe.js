@@ -13,49 +13,61 @@ class Universe {
     const AnimalClass = animalClass || Animal;
 
     this.day = 0;
-    this.environment = new EnvironmentClass();
+    this.environment = new EnvironmentClass(this);
     this.species = species.map(spiciesConfig => new Species(spiciesConfig, AnimalClass));
-    this.results = this.species.map(() => []);
+
+    this.results = [{
+      label: 'Population',
+      data: [
+        ...this.species.map((spec, idx) => ({
+          label: spec.name || `Species ${idx}`,
+          data: [],
+        })),
+        {
+          label: 'Food',
+          data: [],
+        },
+      ],
+    }];
   }
 
-  tick() {
-    this.collectDayResult();
-    return this.waitDay();
-  }
-
-  makeTicks(number, callback) {
-    let promise = Promise.resolve();
+  makeTicks(number, callback, callbackEnd) {
     for (let i = 0; i < number; i++) {
-      promise = promise
-        .then(() => {
-          this.tick();
-          callback(this.getResults());
-        })
-        .then(() => this.makeTimeout());
+      setTimeout(() => {
+        this.collectCycleResult();
+        this.makeCycle();
+        callback(this.getResults());
+        if (callbackEnd && i === number - 1) {
+          callbackEnd(this.getResults());
+        }
+      }, 0);
     }
-    return promise;
   }
 
-  waitDay() {
+  makeCycle() {
     const allAnimals = this.getAllLiveAnimals();
-    const actPromises = allAnimals.map(animal => animal.act(this.environment));
-    return Promise.all(actPromises).then(() => {
-      allAnimals.forEach(animal => animal.updateStats());
-      this.day++;
-    });
+
+    this.environment.startCycle();
+    allAnimals.forEach(animal => animal.startCycle());
+    allAnimals.forEach(animal => animal.act(this.environment));
+    this.environment.resolveIntentions();
+    allAnimals.forEach(animal => animal.endCycle());
+    this.environment.endCycle();
+    this.day++;
   }
 
-  collectDayResult() {
+  collectCycleResult() {
     const { results } = this;
+    const chart1Data = results[0].data;
     this.species.forEach((spicies, idx) => {
-      console.log('results', {
+      chart1Data[idx].data.push({
         x: this.day,
         y: spicies.population,
       });
-      results[idx].push({
-        x: this.day,
-        y: spicies.population,
-      });
+    });
+    chart1Data.find(line => line.label === 'Food').data.push({
+      x: this.day,
+      y: this.environment.stats.foodAmount,
     });
   }
 

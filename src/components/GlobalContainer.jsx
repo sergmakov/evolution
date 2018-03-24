@@ -15,18 +15,28 @@ class GlobalContainer extends React.Component {
       store.results = results;
     });
   }
+
+  renderChart(chartData, idx) {
+    return (
+      <div key={idx}>
+        <h2>{chartData.label}</h2>
+        <Chart
+          results={chartData.data.toJS()}
+        />
+      </div>
+    );
+  }
+
   render() {
     const { results } = this.props.store;
     return (
       <Grid>
         <Row className="show-grid">
           <Col sm={6} md={3}>
-            <Chart
-              results={results.toJS()}
-            />
             <FormGroup>
               <Button onClick={this.evolve}>Evolve</Button>
             </FormGroup>
+            {results.map(this.renderChart)}
           </Col>
         </Row>
       </Grid>
