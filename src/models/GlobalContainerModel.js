@@ -3,5 +3,6 @@ import { observable } from 'mobx';
 export default class GlobalContainerModel {
   @observable message = '';
   @observable results = [];
-  @observable results2 = [];
+  @observable progress = 0;
+  @observable spentTime = 0;
 }

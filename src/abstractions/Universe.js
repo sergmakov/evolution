@@ -31,17 +31,17 @@ class Universe {
     }];
   }
 
-  makeTicks(number, callback, callbackEnd) {
+  makeTicks(number, callback) {
+    let promise = Promise.resolve();
     for (let i = 0; i < number; i++) {
-      setTimeout(() => {
+      promise = promise.then(() => new Promise(resolve => {
         this.collectCycleResult();
         this.makeCycle();
         callback(this.getResults());
-        if (callbackEnd && i === number - 1) {
-          callbackEnd(this.getResults());
-        }
-      }, 0);
+        setTimeout(() => resolve(), 0);
+      }));
     }
+    return promise;
   }
 
   makeCycle() {

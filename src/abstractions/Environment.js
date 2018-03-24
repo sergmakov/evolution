@@ -5,15 +5,12 @@ class Environment {
   params = {
     eatChancePerFood: 0.02,
     foodPortion: 2,
-  }
-
-  defaultStats = {
-    foodAmount: 200,
+    foodAmountPerDay: 200,
   }
 
   updateStats() {
     return {
-      ...this.defaultStats,
+      foodAmount: this.params.foodAmountPerDay,
     };
   }
 
@@ -32,7 +29,7 @@ class Environment {
   constructor(universe) {
     this.universe = universe;
     this.stats = {
-      ...this.defaultStats,
+      ...this.updateStats(0),
     };
   }
 
